@@ -93,6 +93,8 @@
         };
 
         function calcular() {
+            const casa1Nome = document.getElementById('casa1').value;
+            const casa2Nome = document.getElementById('casa2').value;
             const odds1 = parseFloat(document.getElementById('odds1').value);
             const odds2 = parseFloat(document.getElementById('odds2').value);
             const valor = parseFloat(document.getElementById('valor').value);
@@ -102,7 +104,7 @@
             }
             const valorCasa1 = (valor / (1 + (odds1 / odds2))).toFixed(2);
             const valorCasa2 = (valor / (1 + (odds2 / odds1))).toFixed(2);
-            document.getElementById('result').innerText = `Aposte ${valorCasa1} na Casa 1 e ${valorCasa2} na Casa 2.`;
+            document.getElementById('result').innerText = `Aposte ${valorCasa1} na ${casa1Nome} e ${valorCasa2} na ${casa2Nome}.`;
         }
     </script>
 </body>
