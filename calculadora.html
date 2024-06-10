@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Arbitragem</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0b0c10;
+            color: #c5c6c7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #1f2833;
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #66fcf1;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #66fcf1;
+            text-align: left;
+        }
+
+        input[type="text"], input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #45a29e;
+            border-radius: 4px;
+            background-color: #0b0c10;
+            color: #c5c6c7;
+        }
+
+        input[type="button"] {
+            background-color: #66fcf1;
+            color: #0b0c10;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 0; /* remove o espaço extra abaixo do botão */
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a29e;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #45a29e;
+            border-radius: 4px;
+            background-color: #1f2833;
+            color: #c5c6c7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="logo prime.png" alt="Prime Sports Arbitrage Specialist" width="200">
+        <h1>Calculadora de Arbitragem</h1>
+        <form id="arbitrageForm">
+            <label for="odds1">Odds 1:</label>
+            <input type="text" id="odds1" name="odds1">
+            <label for="odds2">Odds 2:</label>
+            <input type="text" id="odds2" name="odds2">
+            <label for="stake">Valor da Aposta:</label>
+            <input type="text" id="stake" name="stake">
+            <input type="button" value="Calcular" onclick="calculateArbitrage()">
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            let results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        function calculateArbitrage() {
+            let odds1 = parseFloat(document.getElementById('odds1').value);
+            let odds2 = parseFloat(document.getElementById('odds2').value);
+            let stake = parseFloat(document.getElementById('stake').value);
+
+            if (isNaN(odds1) || isNaN(odds2) || isNaN(stake)) {
+                alert('Por favor, insira valores válidos.');
+                return;
+            }
+
+            let stake1 = stake / (1 + (odds1 / odds2));
+            let stake2 = stake - stake1;
+
+            let casa1 = getParameterByName('casa1');
+            let casa2 = getParameterByName('casa2');
+
+            document.getElementById('result').innerText = `Aposte ${stake1.toFixed(2)} na ${casa1} e ${stake2.toFixed(2)} na ${casa2}.`;
+        }
+
+        window.onload = function() {
+            let odds1 = getParameterByName('odds1');
+            let odds2 = getParameterByName('odds2');
+            let casa1 = getParameterByName('casa1');
+            let casa2 = getParameterByName('casa2');
+            if (odds1 && odds2) {
+                document.getElementById('odds1').value = odds1;
+                document.getElementById('odds2').value = odds2;
+            }
+        };
+    </script>
+</body>
+</html>
